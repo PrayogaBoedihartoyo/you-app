@@ -20,7 +20,9 @@ export class AppService {
     const { email, username, password, confirmPassword } = createUserDto;
 
     if (password !== confirmPassword) {
-      throw new Error('Passwords do not match');
+      return {
+        message: 'Password and confirm password not match',
+      }
     }
 
     const check_user = await this.userModel.findOne({ username });
