@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { CreateUserDto } from "./create-user.dto";
-import { CreateProfileDto } from "./create-profile.dto";
-import { User } from "./user.model";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { CreateProfileDto } from "../dto/create-profile.dto";
+import { User } from "../model/user.model";
 import * as bcrypt from "bcrypt";
 
 @Injectable()
@@ -70,13 +70,11 @@ export class AppService {
 
 
   async createUserProfile(username: string, createProfileDto: CreateProfileDto) {
-    const user = await this.findUserByUsername(username);
-    user.profile = {
-      ...createProfileDto,
-    };
-
-    await user.save();
-
-    return user.profile;
+    await this.findUserByUsername(username);
+    return this.userModel.findOneAndUpdate(
+      { username },
+      { $set: { 'profile': createProfileDto } },
+      { new: true }
+    );
   }
 }

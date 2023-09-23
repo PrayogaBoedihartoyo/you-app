@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { AppService } from "./app.service";
-import { CreateUserDto } from "./create-user.dto";
-import { CreateProfileDto } from "./create-profile.dto";
+import { AppService } from "../services/app.service";
+import { CreateUserDto } from "../dto/create-user.dto";
+import { CreateProfileDto } from "../dto/create-profile.dto";
 
 @Controller('api')
 export class AppController {
