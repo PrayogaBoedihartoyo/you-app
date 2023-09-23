@@ -5,10 +5,13 @@ import { CreateUserDto } from "../dto/create-user.dto";
 import { CreateProfileDto } from "../dto/create-profile.dto";
 import { User } from "../model/user.model";
 import * as bcrypt from "bcrypt";
+import { AuthService } from "../auth/auth.service";
 
 @Injectable()
 export class AppService {
-  constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {}
+  constructor(@InjectModel(User.name)
+              private readonly userModel: Model<User>,
+              private readonly authService: AuthService) {}
 
   getHello(): string {
     return 'Hello World!';
@@ -38,7 +41,9 @@ export class AppService {
     try {
       return await user.save();
     } catch (error) {
-      throw new Error(error.message);
+      return {
+        message: error.message,
+      }
     }
   }
 
@@ -46,7 +51,9 @@ export class AppService {
     const { username, password } = createUserDto;
     const user = await this.userModel.findOne({ username });
     if (!user) {
-      throw new NotFoundException(`User with username '${username}' not found`);
+      return {
+        message: `user with ${username} not found`,
+      }
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
@@ -54,8 +61,12 @@ export class AppService {
         message: 'Invalid username or password',
       }
     }
-
-    return user;
+    const token = await this.authService.createToken({ username });
+    return {
+      message: 'Login success',
+      user,
+      token,
+    }
   }
 
   async findUserByUsername(username: string) {

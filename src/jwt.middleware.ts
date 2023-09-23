@@ -7,20 +7,19 @@ import { JwtService } from "@nestjs/jwt";
 export class JwtMiddleware implements NestMiddleware {
   constructor(private readonly jwtService: JwtService) {}
 
-  use(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization?.replace('Bearer ', ''); // Dapatkan token dari header
+  async use(req: Request, res: Response, next: NextFunction) {
+    const token = req.headers.authorization?.split(' ')[1];
 
     if (token) {
       try {
-         // Verifikasi token
-        req['user'] = this.jwtService.verify(token); // Tambahkan data pengguna ke objek permintaan
-
-        next(); // Lanjutkan permintaan
+        req.user = await this.jwtService.verifyAsync(token);
+        next();
       } catch (error) {
-        res.status(401).json({ message: 'Unauthorized' }); // Token tidak valid
+        res.status(401).json({ message: 'Invalid token' });
       }
     } else {
-      res.status(401).json({ message: 'Unauthorized' }); // Token tidak ada
+      res.status(401).json({ message: 'Token not provided' });
     }
   }
 }
+
