@@ -21,6 +21,7 @@ export class User extends Document {
       zodiac: String,
       height: Number,
       weight: Number,
+      interests: [String],
     },
   })
   profile: {
@@ -31,6 +32,7 @@ export class User extends Document {
     zodiac: string;
     height: number;
     weight: number;
+    interests: string[];
   };
 }
 

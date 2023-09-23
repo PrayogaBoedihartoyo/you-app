@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNumber, IsString } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsNumber, IsString } from "class-validator";
 
 export class CreateProfileDto {
   @IsString()
@@ -21,4 +21,7 @@ export class CreateProfileDto {
 
   @IsNumber()
   weight: number;
+
+  @IsArray()
+  interests: string[];
 }
