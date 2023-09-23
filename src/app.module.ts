@@ -26,7 +26,7 @@ export class AppModule implements NestModule {
     consumer.apply(JwtMiddleware)
       .forRoutes(
         '/api/:username/profile',
-        '/api/:username',
+        // '/api/:username' // AKTIFKAN JIKA INGIN MEMPROTEKSI ROUTE
       );
   }
 }
