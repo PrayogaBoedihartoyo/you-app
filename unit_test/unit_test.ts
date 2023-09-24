@@ -72,7 +72,7 @@ describe('AppController', () => {
       const user = {
         email: 'test@example.com',
         username: 'testuser',
-        password: 'hashedPassword', // Hashed password
+        password: 'hashedPassword',
         profile: {
           displayName: 'Test User',
           gender: 'male',

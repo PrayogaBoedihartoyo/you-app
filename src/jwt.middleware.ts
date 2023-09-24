@@ -1,4 +1,3 @@
-// jwt.middleware.ts
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
 import { JwtService } from "@nestjs/jwt";
